@@ -81,7 +81,7 @@ public class Date {
 	
 	//helper methods
 	private boolean isLeapYear() {
-		if(year % 4 == 0 && year % 100 == 0 && year % 400 == 0) {
+		if(year % Month.QUADRENNIAL == 0 && year % Month.CENTENNIAL == 0 && year % Month.QUATERCENTENNIAL == 0) {
 			return true;
 		}
 		return false;
@@ -89,30 +89,30 @@ public class Date {
 	
 	private int daysInMonth() {
 		switch(month) {
-			case 1:		//January
-				return 31;
-			case 2:		//February
-				return (isLeapYear()) ? 29:28;
-			case 3:		//March
-				return 31;
-			case 4:		//April
-				return 30;
-			case 5:		//May
-				return 31;
-			case 6:		//June
-				return 30;
-			case 7:		//July
-				return 31;
-			case 8:		//August
-				return 31;
-			case 9:		//September
-				return 30;
-			case 10:	//October
-				return 31;
-			case 11:	//November
-				return 30;
-			case 12:	//December
-				return 31;
+			case Month.JAN:		//January
+				return Month.DAYS_ODD;
+			case Month.FEB:		//February
+				return (isLeapYear()) ? Month.DAYS_FEB+1: Month.DAYS_FEB;
+			case Month.MAR:		//March
+				return Month.DAYS_ODD;
+			case Month.APR:		//April
+				return Month.DAYS_EVEN;
+			case Month.MAY:		//May
+				return Month.DAYS_ODD;
+			case Month.JUN:		//June
+				return Month.DAYS_EVEN;
+			case Month.JUL:		//July
+				return Month.DAYS_ODD;
+			case Month.AUG:		//August
+				return Month.DAYS_ODD;
+			case Month.SEP:		//September
+				return Month.DAYS_EVEN;
+			case Month.OCT:		//October
+				return Month.DAYS_ODD;
+			case Month.NOV:		//November
+				return Month.DAYS_EVEN;
+			case Month.DEC:		//December
+				return Month.DAYS_ODD;
 		}
 		
 		return -1;
@@ -126,6 +126,19 @@ public class Date {
 		return ( month > 0 ) && ( month < 13 );
 	}
 	
+	//test main
+	
+	public static void main(String[]args) {
+		Date d1 = new Date("1/31/2001");
+		System.out.println(d1.toString());
+		System.out.println(d1.getDay());
+		System.out.println(d1.getMonth());
+		System.out.println(d1.getYear());
+		System.out.println(d1.isValid());
+	}
+	
 }
+
+
 
 
