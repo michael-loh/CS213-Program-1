@@ -1,5 +1,5 @@
 /**
- 
+ Michael Loh
  @author  
  */
 
@@ -47,7 +47,18 @@ public class TeamMember
    
 	public static void main(String [] args)
 	{
-      //testbed main; you must include test cases that exercise 
-      //the constructor and all methods in this class.
+		//testbed main; you must include test cases that exercise 
+		//the constructor and all methods in this class.
+		TeamMember t1 = new TeamMember("Daniel", new Date("1/1/2020"));				//testing contstructor and toString()
+		System.out.println(t1.toString());
+		
+		TeamMember t2 = new TeamMember("Daniel", new Date("1/1/2020"));				//testing equals with a successful case
+		System.out.println(t1.equals(t2));
+		
+		TeamMember t3 = new TeamMember("Mark", new Date("1/1/2020"));				//testing equals with different name
+		System.out.println(t1.equals(t3));
+		
+		TeamMember t4 = new TeamMember("Daniel", new Date("12/31/2020"));			//testing equals with different date
+		System.out.println(t1.equals(t4));
 	}
 }
