@@ -1,105 +1,138 @@
 /**
-  
+  Varun Vasudevan 
  @author  
  */
 
 import java.util.Scanner;
-import java.util.StringTokenizer;
+
 public class ProjectManager
 {
-   Scanner stdin;
-   Team cs213;
-   public void run()
-   {
-       
-      boolean done = false;
-      while ( !done )
-      {
-         String command = stdin.next();
-         switch (command.charAt(0))  
-         {   
-            case 'A': add(command);
-		       
-            case 'R': remove(command);
-            
-            case 'P': print();
-            case 'Q': print(); 
-            		done =true;    
-            default: //deal with bad command here 
-            	System.out.println("Command "+ command.charAt(0)+ "not supported!" );
-         }  
-      }
-      //write java code before you terminate the program
-   } //run()
+	Scanner stdin;
+	Team cs213;
    
-   private void add(String command)
-   {
-	  StringTokenizer st = new StringTokenizer(command, " ");
-	  st.nextToken();
-	  String teamMember = st.nextToken();
-	  String dateString =  st.nextToken();
-	  Date date = new Date(dateString);
-	  TeamMember member = new TeamMember(teamMember,date);
-	  if (!date.isValid()) {
-		 System.out.println("Date is not valid");
-		 
-	  }
-	  else if(cs213.contains(member)) {
-			  System.out.println(teamMember + " " + dateString + " is already in the team." );
-		  }
-	  else {
-		  cs213.add(member);
-		  System.out.println(teamMember + " " + dateString + " has joined the team." );
-	  }
-	  
-	  
-    //must check if the date is valid
-	//must call the contains() method to check if a given 
-	//team member is in the team already
-   }
+	public void run()
+	{   
+		stdin = new Scanner(System.in);
+		cs213 = new Team();
+		
+		boolean done = false;
+      
+		while ( !done )
+		{
+			String command = stdin.next();
+			
+			switch ( command )  
+			{   
+				case "A": 
+					add();
+					break; 
+				case "R": 
+					remove();
+					break;
+				case "P": 
+					print();
+					break;
+				case "Q": 
+					print();
+					successfulQuit();
+					done = true;
+				default: 
+					System.out.println("Command '" + command + "' is not supported!");
+					stdin.nextLine();
+			}  
+		}
+		//write java code before you terminate the program
+	} //run()
    
+	private void add()
+	{
+		String name = stdin.next();
+		
+		//must check if the date is valid
+		String date = stdin.next();
+		Date d = new Date(date);
+		if( !d.isValid() ) {
+			invalidDateError(date);
+			return;
+		}
+		
+		//must call the contains() method to check if a given
+		TeamMember member = new TeamMember(name, d);
+		if(cs213.contains(member)) {
+			
+			//team member is in the team already
+			duplicateMemberError(member);
+			return;
+		}
+		
+		cs213.add(member);
+		successfulAdd(member);
+		
+	}
    
-   private void remove(String command)
-   {
-      //must check if the date is valid
-	  StringTokenizer st = new StringTokenizer(command, " ");
-	  st.nextToken();
-	  String teamMember = st.nextToken();
-	  String dateString =  st.nextToken();
-	  Date date = new Date(dateString);
-	  TeamMember member = new TeamMember(teamMember,date);
-	  if (!date.isValid()) {
-		 System.out.println("Date is not valid");
-		 
-	  }
-//	  else if(!cs213.contains(member)) {
-//		  System.out.println(teamMember + " " + dateString + " is not a team member." );
-//	  }
-	  else {
-		  boolean isRemoved = cs213.remove(member);
-		  if(isRemoved) {
-			  System.out.println(teamMember + " " + dateString + " has left the team." );
-		  }
-		  else {
-			  System.out.println(teamMember + " " + dateString + " is not a team member." );
-		  }
-	  }
-   }
-   
-   private void print()
-   {
-	   if(cs213.isEmpty()) {
-		   System.out.println("We have 0 team members!");
-		   
-	   }
-	   else {
-		   System.out.println("We have the following team members: ");
-		   cs213.print();
-		   System.out.println("-- end of the list --");
-		   
-		   
-	   }
-      //must check if the team has 0 members. 
-   }   
-} //ProjectManager
+	private void remove()
+	{
+		String name = stdin.next();
+		
+		//must check if the date is valid   
+		String date = stdin.next();
+		Date d = new Date(date);
+		if(!d.isValid()) {
+			invalidDateError(date);
+			return;
+		}
+		
+		//Initialize the TeamMember
+		TeamMember member = new TeamMember(name, d);
+		
+		//check if Team contains member
+		if(!cs213.contains(member)) {
+			memberNotFound(member);
+			return;
+		}
+		
+		//remove the member
+		cs213.remove(member);
+		successfulRemove(member);
+		
+	}
+	
+	private void print()
+	{
+		//must check if the team has 0 members. 
+		if(cs213.isEmpty()) {
+			System.out.println("We have 0 team members!");
+			return;
+		}
+		
+		//print out list of team members
+		System.out.println("We have the following members:");
+		cs213.print();
+		System.out.println("-- end of list --");
+	}
+	
+	//helper methods
+	private void invalidDateError(String date) {
+		System.out.println(date + " is not a valid date!");
+	}
 
+	private void duplicateMemberError(TeamMember m) {
+		System.out.println(m.toString() + " is already in the team.");
+	}
+	
+	private void successfulAdd(TeamMember m) {
+		System.out.println(m.toString() + " has joined the team.");
+	}
+	
+	private void successfulRemove(TeamMember m) {
+		System.out.println(m.toString() + " has left the team.");
+	}
+	
+	private void memberNotFound(TeamMember m) {
+		System.out.println(m.toString() + " is not a team member.");
+	}
+	
+	private void successfulQuit() {
+		System.out.println("The team is ready to go!");
+	}
+} //ProjectManager
