@@ -1,5 +1,5 @@
 /**
-  
+ Michael Loh
  @author  
  */
 
@@ -16,10 +16,16 @@ public class Date {
 		StringTokenizer st = new StringTokenizer(d, "/");
 	   
 		int i = 0;
-	   
-		month = Integer.parseInt(st.nextToken());
-		day = Integer.parseInt(st.nextToken());
-		year = Integer.parseInt(st.nextToken());
+		
+		try {
+			month = Integer.parseInt(st.nextToken());
+			day = Integer.parseInt(st.nextToken());
+			year = Integer.parseInt(st.nextToken());
+		}catch(Exception e) {			//assign values back to default if we are given an invalid date
+			month = 0;
+			day = 0;
+			year = 0;
+		}
 	}
    
 	public Date(Date d)   
@@ -129,16 +135,27 @@ public class Date {
 	//test main
 	
 	public static void main(String[]args) {
-		Date d1 = new Date("1/31/2001");
+		Date d1 = new Date("11/1/2020");				//test that all the methods work on a valid date
 		System.out.println(d1.toString());
 		System.out.println(d1.getDay());
 		System.out.println(d1.getMonth());
 		System.out.println(d1.getYear());
 		System.out.println(d1.isValid());
+		
+		Date d2 = new Date("1/32/2020");				//test an invalid day
+		System.out.println(d2.isValid());
+		
+		Date d3 = new Date("0/1/2020");    				//test an invalid month
+		System.out.println(d3.isValid());
+		
+		Date d4 = new Date("2/29/2000");				//test valid leap year day
+		System.out.println(d4.isValid());
+		
+		Date d5 = new Date("2/29/2016");				//test an invalid leap year day
+		System.out.println(d5.isValid());
 	}
 	
 }
-
 
 
 
